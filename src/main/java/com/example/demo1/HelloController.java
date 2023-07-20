@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Stack;
 
 public class HelloController {
+    private double value;
     private Calculation answer;
     private final Stack<String> stk;
     private final ArrayList<String> operators;
@@ -28,9 +29,8 @@ public class HelloController {
     private double y;
     public HelloController() {
         this.stk = new Stack<String>();
-        this.stk.push("0");
         this.visible = false;
-        this.number = "0";
+        this.number = "";
         this.operators = new ArrayList<String>();
         this.operators.add("+");
         this.operators.add( "-");
@@ -209,7 +209,7 @@ public class HelloController {
         this.mainLabel.setText("0");
         this.showEquation.setText("0");
         this.stk.clear();
-        this.number = "0";
+        this.number = "";
     }
 
     @FXML
@@ -222,33 +222,43 @@ public class HelloController {
         System.out.println("button plus");
     }
 
-    public void evaluate(String o){
+    public void evaluate(String operator){
+        if(this.stk.isEmpty() && this.number.length() == 0){
+            this.stk.push("0");
+            this.stk.push(operator);
+            this.showEquation.setText("0 "+operator);
+            this.mainLabel.setText("0");
 
-        System.out.println(this.stk);
-        System.out.println(this.stk.peek());
-        if(this.operators.contains(this.stk.peek())){
+        } else if (this.number.length() != 0 && this.stk.isEmpty()) {
+            this.showEquation.setText(this.number+ " "+ operator);
             this.stk.push(this.number);
-            System.out.println("hello");
+            this.stk.push(operator);
+            this.number = "";
+        }else if(this.number.length() == 0){
             this.stk.pop();
-            this.stk.push(o);
-        } else if (this.stk.size() == 1) {
-            this.stk.push(this.number);
-            System.out.println("bye");
-            this.stk.push(o);
-            this.showEquation.setText(this.number+o);
-            this.number = "0";
-        }else {
-            this.stk.push(this.number);
-            System.out.println("end");
-            String temp = String.valueOf(this.answer.returnValue());
-            this.showEquation.setText(String.valueOf(temp+o));
-            this.stk.clear();
+            String temp = this.stk.pop();
             this.stk.push(temp);
-            this.stk.push(o);
-            this.number ="0";
+            this.stk.push(operator);
+            this.showEquation.setText(temp + " "+operator);
+        }else{
+            this.stk.push(this.number);
+            try{
+                this.value = this.answer.returnValue();
+                this.stk.clear();
+                this.stk.push(String.valueOf(value));
+                this.stk.push(operator);
+                this.number = "";
+                this.showEquation.setText(String.valueOf(value)+" "+operator);
+                this.mainLabel.setText(String.valueOf(value));
+            }catch (ArithmeticException e){
+                this.showEquation.setText(String.valueOf(this.value)+" "+operator);
+                this.mainLabel.setText("Can't divide by zero");
+                this.buttonResetPressed();
+            }
+
+
+
         }
-        System.out.println(this.stk);
-
-
     }
+
 }
