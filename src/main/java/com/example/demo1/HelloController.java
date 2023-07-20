@@ -201,7 +201,16 @@ public class HelloController {
 
     @FXML
     protected void buttonErasePressed(){
-        System.out.println("button plus");
+        if (this.number.length() != 0){
+            this.number = this.number.replace(this.number.substring(this.number.length()-1), "");
+            if (this.number.length() == 0){
+                this.mainLabel.setText("0");
+            }else{
+                this.mainLabel.setText(this.number);
+            }
+        }else{
+            this.number = "";
+        }
     }
 
     @FXML
