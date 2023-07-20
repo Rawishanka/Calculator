@@ -60,7 +60,7 @@
                         <Font size="22.0" />
                      </font>
                   </Button>
-                  <Button fx:id="keys" mnemonicParsing="false" prefHeight="60.0" prefWidth="88.0" stylesheets="@../../../styles/calculator.css" text="CE" textFill="WHITE" GridPane.columnIndex="1">
+                  <Button fx:id="keys" mnemonicParsing="false" onAction="#eraseCurrentValue" prefHeight="60.0" prefWidth="88.0" stylesheets="@../../../styles/calculator.css" text="CE" textFill="WHITE" GridPane.columnIndex="1">
                      <font>
                         <Font size="22.0" />
                      </font>

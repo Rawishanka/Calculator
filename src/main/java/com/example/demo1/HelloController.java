@@ -231,6 +231,12 @@ public class HelloController {
         System.out.println("button plus");
     }
 
+    @FXML
+    protected void eraseCurrentValue(){
+        this.number = "";
+        this.mainLabel.setText("0");
+    }
+
     public void evaluate(String operator){
         if(this.stk.isEmpty() && this.number.length() == 0){
             this.stk.push("0");
