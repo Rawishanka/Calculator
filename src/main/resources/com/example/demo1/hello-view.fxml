@@ -55,7 +55,7 @@
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
-                  <Button fx:id="keys" mnemonicParsing="false" onAction="#buttonPercentagePressed" prefHeight="61.0" prefWidth="88.0" stylesheets="@../../../styles/calculator.css" text="\%" textFill="WHITE">
+                  <Button fx:id="keys" mnemonicParsing="false" onAction="#buttonModuloPressed" prefHeight="61.0" prefWidth="88.0" stylesheets="@../../../styles/calculator.css" text="\%" textFill="WHITE">
                      <font>
                         <Font size="22.0" />
                      </font>
@@ -84,7 +84,7 @@
                         <Font size="22.0" />
                      </font>
                   </Button>
-                  <Button fx:id="keys" mnemonicParsing="false" prefHeight="70.0" prefWidth="88.0" text="x2" textFill="WHITE" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                  <Button fx:id="keys" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="70.0" prefWidth="88.0" text="x2" textFill="WHITE" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                   <Button fx:id="keys" mnemonicParsing="false" text="Button" textFill="WHITE" GridPane.columnIndex="2" GridPane.rowIndex="1" />
                   <Button fx:id="keys" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#buttonDividePressed" prefHeight="61.0" prefWidth="88.0" textFill="WHITE" GridPane.columnIndex="3" GridPane.rowIndex="1">
                      <graphic>
@@ -135,7 +135,7 @@
                            </image>
                         </ImageView>
                      </graphic></Button>
-                  <Button fx:id="keys" mnemonicParsing="false" onAction="#buttonPlusOrMinusPressed" prefHeight="65.0" prefWidth="88.0" textFill="WHITE" GridPane.rowIndex="5">
+                  <Button fx:id="keys" alignment="CENTER" mnemonicParsing="false" onAction="#buttonPlusOrMinusPressed" prefHeight="65.0" prefWidth="88.0" textFill="WHITE" GridPane.rowIndex="5">
                      <graphic>
                         <ImageView fitHeight="34.0" fitWidth="27.0" onDragDetected="#buttonPlusOrMinusPressed" pickOnBounds="true" preserveRatio="true">
                            <image>

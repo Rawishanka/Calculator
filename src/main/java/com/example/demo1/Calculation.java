@@ -19,6 +19,7 @@ public class Calculation {
             case "-" -> this.number1 - this.number2;
             case "×" -> this.number1 * this.number2;
             case "÷" -> this.number1 / this.number2;
+            case "%" -> this.number1 % this.number2;
             default -> 0;
         };
     }

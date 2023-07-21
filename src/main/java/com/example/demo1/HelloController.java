@@ -6,9 +6,11 @@ import javafx.scene.layout.VBox;
 import javafx.scene.shape.Circle;
 
 import java.util.ArrayList;
+import java.util.Objects;
 import java.util.Stack;
 
 public class HelloController {
+    private boolean minus;
     private double value;
     private Calculation answer;
     private final Stack<String> stk;
@@ -38,6 +40,7 @@ public class HelloController {
         this.operators.add("÷");
         this.operators.add("/");
         this.answer = new Calculation(stk);
+        this.minus = false;
 
     }
     @FXML
@@ -72,101 +75,51 @@ public class HelloController {
 
     @FXML
     protected void button1Pressed(){
-        if(this.number.length() == 1 && this.number.equals("0")){
-            this.number = "1";
-        }else{
-            this.number += "1";
-        }
-        this.mainLabel.setText(this.number);
+        this.numericalButtonPressed("1");
 
     }
     @FXML
     protected void button2Pressed(){
-        if(this.number.length() == 1 && this.number.equals("0")){
-            this.number = "2";
-        }else{
-            this.number += "2";
-        }
-        this.mainLabel.setText(this.number);
+        this.numericalButtonPressed("2");
     }
 
     @FXML
     protected void button3Pressed(){
-        if(this.number.length() == 1 && this.number.equals("0")){
-            this.number = "3";
-        }else{
-            this.number += "3";
-        }
-        this.mainLabel.setText(this.number);
+        this.numericalButtonPressed("3");
     }
 
     @FXML
     protected void button4Pressed(){
-        if(this.number.length() == 1 && this.number.equals("0")){
-            this.number = "4";
-        }else{
-            this.number += "4";
-        }
-        this.mainLabel.setText(this.number);
+        this.numericalButtonPressed("4");
     }
 
     @FXML
     protected void button5Pressed(){
-        if(this.number.length() == 1 && this.number.equals("0")){
-            this.number = "5";
-        }else{
-            this.number += "5";
-        }
-        this.mainLabel.setText(this.number);
+        this.numericalButtonPressed("5");
     }
 
     @FXML
     protected void button6Pressed(){
-        if(this.number.length() == 1 && this.number.equals("0")){
-            this.number = "6";
-        }else{
-            this.number += "6";
-        }
-        this.mainLabel.setText(this.number);
+        this.numericalButtonPressed("6");
     }
 
     @FXML
     protected void button7Pressed(){
-        if(this.number.length() == 1 && this.number.equals("0")){
-            this.number = "7";
-        }else{
-            this.number += "7";
-        }
-        this.mainLabel.setText(this.number);
+        this.numericalButtonPressed("7");
     }
 
     @FXML
     protected void button8Pressed(){
-        if(this.number.length() == 1 && this.number.equals("0")){
-            this.number = "8";
-        }else{
-            this.number += "8";
-        }
-        this.mainLabel.setText(this.number);
+        this.numericalButtonPressed("8");
     }
     @FXML
     protected void button9Pressed(){
-        if(this.number.length() == 1 && this.number.equals("0")){
-            this.number = "9";
-        }else{
-            this.number += "9";
-        }
-        this.mainLabel.setText(this.number);
+        this.numericalButtonPressed("9");
     }
 
     @FXML
     protected void button0Pressed(){
-        if(this.number.length() == 1 && this.number.equals("0")){
-            this.number = "0";
-        }else{
-            this.number += "0";
-        }
-        this.mainLabel.setText(this.number);
+        this.numericalButtonPressed("0");
     }
 
     @FXML
@@ -181,12 +134,17 @@ public class HelloController {
 
     @FXML
     protected void buttonEqualPressed(){
-        System.out.println("button plus");
+        this.evaluate("=");
     }
 
     @FXML
     protected void buttonMultiplyPressed(){
         this.evaluate("×");
+    }
+
+    @FXML
+    protected void buttonModuloPressed(){
+        this.evaluate("%");
     }
 
     @FXML
@@ -196,20 +154,35 @@ public class HelloController {
 
     @FXML
     protected void buttonPlusOrMinusPressed(){
-        System.out.println("button plus");
+        if(!this.minus){
+            if(this.number.length() == 0){
+                this.number = "-0"+ this.number;
+            }else{
+                this.number = "-"+ this.number;
+            }
+            this.minus = true;
+        }else{
+            this.number = this.number.substring(1,this.number.length());
+            this.minus = false;
+        }
+        this.mainLabel.setText(this.number);
     }
 
     @FXML
     protected void buttonErasePressed(){
-        if (this.number.length() != 0){
-            this.number = this.number.replace(this.number.substring(this.number.length()-1), "");
-            if (this.number.length() == 0){
+        if (this.number.length() == 0){
+            this.mainLabel.setText("0");
+            this.minus = false;
+        }else{
+            String subString = this.number.substring(0,this.number.length()-1);
+            if(subString.length() == 0){
                 this.mainLabel.setText("0");
+                this.number = "";
+                this.minus = false;
             }else{
+                this.number = subString;
                 this.mainLabel.setText(this.number);
             }
-        }else{
-            this.number = "";
         }
     }
 
@@ -219,11 +192,21 @@ public class HelloController {
         this.showEquation.setText("0");
         this.stk.clear();
         this.number = "";
+        this.minus = false;
     }
 
     @FXML
     protected void buttonDecimalPressed(){
-        System.out.println("button plus");
+        if(this.number.length() == 0){
+            this.number = "0.";
+        }else{
+            if(this.number.contains(".")){
+
+            }else{
+                this.number += ".";
+            }
+        }
+        this.mainLabel.setText(this.number);
     }
 
     @FXML
@@ -238,42 +221,89 @@ public class HelloController {
     }
 
     public void evaluate(String operator){
+        this.minus = false;
         if(this.stk.isEmpty() && this.number.length() == 0){
-            this.stk.push("0");
-            this.stk.push(operator);
-            this.showEquation.setText("0 "+operator);
-            this.mainLabel.setText("0");
+            if(Objects.equals(operator, "=")){
+                this.showEquation.setText("0 "+operator);
+            }else{
+                this.stk.push("0");
+                this.stk.push(operator);
+                this.showEquation.setText("0 "+operator);
+                this.mainLabel.setText("0");
+            }
+
 
         } else if (this.number.length() != 0 && this.stk.isEmpty()) {
             this.showEquation.setText(this.number+ " "+ operator);
             this.stk.push(this.number);
-            this.stk.push(operator);
-            this.number = "";
-        }else if(this.number.length() == 0){
-            this.stk.pop();
-            String temp = this.stk.pop();
-            this.stk.push(temp);
-            this.stk.push(operator);
-            this.showEquation.setText(temp + " "+operator);
-        }else{
-            this.stk.push(this.number);
-            try{
-                this.value = this.answer.returnValue();
-                this.stk.clear();
-                this.stk.push(String.valueOf(value));
+            if(!Objects.equals(operator, "=")){
                 this.stk.push(operator);
-                this.number = "";
-                this.showEquation.setText(String.valueOf(value)+" "+operator);
-                this.mainLabel.setText(String.valueOf(value));
-            }catch (ArithmeticException e){
-                this.showEquation.setText(String.valueOf(this.value)+" "+operator);
-                this.mainLabel.setText("Can't divide by zero");
-                this.buttonResetPressed();
+            }
+            this.number = "";
+
+        }else if(this.number.length() == 0){
+            if(!Objects.equals(operator, "=") && this.stk.size() != 1){
+                this.stk.pop();
+                String temp = this.stk.pop();
+                this.stk.push(temp);
+                this.stk.push(operator);
+                this.showEquation.setText(temp + " "+operator);
+            }else if(Objects.equals(operator, "=") && this.stk.size() != 1){
+                this.stk.pop();
+                String temp = this.stk.pop();
+                this.stk.push(temp);
+                this.showEquation.setText(temp + " "+operator);
+            }else if(!Objects.equals(operator, "=") && this.stk.size() == 1){
+                String temp = this.stk.pop();
+                this.stk.push(temp);
+                this.stk.push(operator);
+                this.showEquation.setText(temp + " "+operator);
+            }else{
+                String temp = this.stk.pop();
+                this.stk.push(temp);
+                this.showEquation.setText(temp + " "+operator);
             }
 
-
-
+        }else{
+            if(this.stk.size() == 1){
+                this.stk.pop();
+                this.stk.push(this.number);
+                if(!Objects.equals(operator, "=")){
+                    this.stk.push(operator);
+                }
+                this.showEquation.setText(this.number+" "+operator);
+                this.number = "";
+            }else{
+                this.stk.push(this.number);
+                try{
+                    this.value = this.answer.returnValue();
+                    this.stk.clear();
+                    this.stk.push(String.valueOf(value));
+                    if(!Objects.equals(operator, "=")){
+                        this.stk.push(operator);
+                    }
+                    this.number = "";
+                    this.showEquation.setText(String.valueOf(value)+" "+operator);
+                    this.mainLabel.setText(String.valueOf(value));
+                }catch (ArithmeticException e){
+                    this.showEquation.setText(String.valueOf(this.value)+" "+operator);
+                    this.mainLabel.setText("Can't divide by zero");
+                    this.buttonResetPressed();
+                }
+            }
         }
+    }
+    public void numericalButtonPressed(String button){
+        if(this.number.length() == 1 && this.number.equals("0") || this.number.equals("-0")){
+            if(this.minus){
+                this.number = "-"+button;
+            }else{
+                this.number = button;
+            }
+        }else{
+            this.number += button;
+        }
+        this.mainLabel.setText(this.number);
     }
 
 }
